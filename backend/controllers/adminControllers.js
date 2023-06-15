@@ -6,7 +6,7 @@ export const createAdmin = async (req, res) => {
 
   try {
     if (!name || !email || !password) {
-      res.status(400).json({
+      return res.status(400).json({
         status: "failed",
         message: "name, email and password are required",
       });
@@ -26,6 +26,8 @@ export const createAdmin = async (req, res) => {
       password,
     });
 
+    genToken(res, admin._id)
+
     res.status(201).json({
       status: "success",
       message: "Account created successfully",
@@ -36,7 +38,7 @@ export const createAdmin = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "failed",
       message: error.message,
     });
@@ -77,4 +79,14 @@ export const adminLogin = async (req, res) => {
       message: error.message,
     });
   }
+};
+
+// Admin logout
+export const logout = (req, res) => {
+  res.cookie("access_token", "");
+
+  res.status(200).json({
+    status: "success",
+    message: "User logged out",
+  });
 };
