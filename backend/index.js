@@ -1,34 +1,38 @@
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan'
-import cookieParser from 'cookie-parser';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import adminRouter from './routes/adminRoutes.js'
-import userRoutes from './routes/userRoutes.js';
-import { authiddleware } from './middleware/authMiddleware.js';
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import cookieParser from "cookie-parser";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import adminRouter from "./routes/adminRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import hostelRoutes from "./routes/hostelRoutes.js";
+import { authiddleware } from "./middleware/authMiddleware.js";
+import roomRoute from "./routes/roomRoutes.js";
 
 const app = express();
 
-app.use(express.json())
-app.use(cors())
-app.use(cookieParser())
-app.use(morgan('dev'))
+app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
+app.use(morgan("dev"));
 
-dotenv.config()
+dotenv.config();
 
-app.use('/api/v1/hostelite', adminRouter)
-app.use('/api/v1/hostelite', authiddleware, userRoutes)
+app.use("/api/v1/hostelite", adminRouter);
+app.use("/api/v1/hostelite", authiddleware, userRoutes);
+app.use("/api/v1/hostelite", authiddleware, hostelRoutes);
+app.use("/api/v1/hostelite", authiddleware, roomRoute);
 
-app.get('/', (req,res) => {
-  res.send('hostel management app');
-})
+app.get("/", (req, res) => {
+  res.send("hostel management app");
+});
 
-const Port = process.env.PORT || 5500
+const Port = process.env.PORT || 5500;
 
-app.listen(Port,()=>{
-    console.log(`App is running on port: ${Port}`)
-})
+app.listen(Port, () => {
+  console.log(`App is running on port: ${Port}`);
+});
 
 const URI = process.env.connectionURI;
 mongoose

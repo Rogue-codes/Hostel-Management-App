@@ -1,16 +1,30 @@
 import mongoose from "mongoose";
 
 const hostelSchema = new mongoose.Schema({
-  title: {
-    type: "string",
+  name: {
+    type: String,
     required: true,
   },
-  no_floors: {
+  number_of_floors: {
+    type: Number,
+    required: true,
+    default: 1
+  },
+  maxRoomsPerFloor: {
     type: Number,
     required: true,
   },
-  address: {
+  ownedBy:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Admin",
+    required: true,
+  },
+  location: {
     type: String,
     required: true,
   },
 });
+
+const Hostel = mongoose.model("Hostel", hostelSchema);
+
+export default Hostel;
